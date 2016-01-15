@@ -1,4 +1,4 @@
-package ebolo.handlers;
+package ebolo.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -8,9 +8,9 @@ import javafx.scene.input.KeyEvent;
  * The custom Keys handler for the Application
  */
 public class BoardKeysHandler implements EventHandler<KeyEvent> {
-    private BoardControlPanel mControlPanel;
+    private final PuzzleBoardController mControlPanel;
 
-    public BoardKeysHandler(BoardControlPanel controlPanel) {
+    public BoardKeysHandler(PuzzleBoardController controlPanel) {
         mControlPanel = controlPanel;
     }
 

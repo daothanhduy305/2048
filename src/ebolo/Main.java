@@ -1,12 +1,13 @@
 package ebolo;
 
-import ebolo.handlers.BoardControlPanel;
-import ebolo.handlers.BoardKeysHandler;
-import ebolo.parts.PuzzleBoardGroup;
+import ebolo.controller.BoardKeysHandler;
+import ebolo.controller.PuzzleBoardController;
+import ebolo.data.Settings;
+import ebolo.gui.AppBoard;
 import javafx.application.Application;
-import javafx.geometry.Dimension2D;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 /**
@@ -15,27 +16,26 @@ import javafx.stage.Stage;
  */
 
 public class Main extends Application {
-    private static Dimension2D boardSize;
-    private static BoardControlPanel boardControlPanel;
-
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        primaryStage.setTitle("2048 - Puzzle Game");
-        boardSize = new Dimension2D(600, 600);
-        PuzzleBoardGroup puzzleBoardGroup = new PuzzleBoardGroup(boardSize);
-        Scene demo = new Scene(puzzleBoardGroup, boardSize.getWidth(), boardSize.getHeight(), false, SceneAntialiasing.BALANCED);
-        demo.setOnKeyPressed(new BoardKeysHandler(boardControlPanel = new BoardControlPanel(puzzleBoardGroup.getPuzzleBoard())));
-        primaryStage.setScene(demo);
-        primaryStage.setResizable(false);
-        primaryStage.show();
-    }
-
+    private PuzzleBoardController boardController;
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    public static BoardControlPanel getBoardControlPanel() {
-        return boardControlPanel;
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        primaryStage.setTitle("2048 - Puzzle Game");
+        AppBoard mainAppBoard;
+        Scene mainScene = new Scene(mainAppBoard = new AppBoard(), Settings.getScreenWidth(), Settings.getScreenHeight(),
+                false, SceneAntialiasing.BALANCED);
+        mainScene.setOnKeyPressed(
+                new BoardKeysHandler(mainAppBoard.boardController)
+        );
+        primaryStage.setScene(mainScene);
+        primaryStage.setResizable(false);
+        primaryStage.setFullScreen(true);
+        primaryStage.setFullScreenExitHint("");
+        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        primaryStage.show();
     }
 }
