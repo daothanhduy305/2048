@@ -9,6 +9,11 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 /**
  * Created by Ebolo on 11-Jan-16.
  * Action menu
@@ -22,7 +27,6 @@ public class ActionMenu extends VBox {
         //Preparation
         mainBoard = appBoard;
         Dimension2D menuSize = (new Settings()).getMenuSize();
-        Dimension2D boardSize = (new Settings()).getBoardSize();
         this.setPrefSize(menuSize.getWidth(), menuSize.getHeight());
         this.setBackground(new Background(new BackgroundFill(Settings.background_color, null, null)));
 
@@ -33,7 +37,7 @@ public class ActionMenu extends VBox {
         boardWhiteCover.setBackground(new Background(new BackgroundFill(Color.rgb(253, 254, 230, 0.8f), null, null)));*/
 
         //Logo Creator
-        ImageView logo = new ImageView("file:src/ebolo/images/logo.png");
+        ImageView logo = new ImageView(Settings.imagesFolder + "logo.png");
         logo.setFitWidth(menuSize.getWidth());
         logo.setSmooth(true);
         logo.setPreserveRatio(true);
@@ -94,6 +98,23 @@ public class ActionMenu extends VBox {
             /*curtainCall();
             Label textLabel = new Label("Leave game?");
             textLabel.setEffect(new DropShadow(5f, 0, 0, Color.DARKGRAY));*/
+
+            //Save data before Exiting
+            try {
+                File saveFolder = new File(Settings.saveFolder);
+                if (!saveFolder.exists()) {
+                    //noinspection ResultOfMethodCallIgnored
+                    saveFolder.mkdir();
+                }
+                ObjectOutputStream saveFile = new ObjectOutputStream(new FileOutputStream(Settings.savePath));
+                saveFile.writeObject(mainBoard.boardController.getCurrentGame());
+                saveFile.writeObject(mainBoard.boardController.getMoveBackup());
+                saveFile.writeObject(scoreBox.getScoreValue());
+                saveFile.writeObject(bestBox.getScoreValue());
+                saveFile.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             System.exit(0);
         });
         buttonsBox.add(exitBut, 0, 3, 1, 1);
@@ -113,6 +134,11 @@ public class ActionMenu extends VBox {
         if (scoreBox.getScoreValue() > bestBox.getScoreValue()) {
             bestBox.updateScore(score);
         }
+    }
+
+    public void loadScores(long score, long best) {
+        this.scoreBox.updateScore(score);
+        this.bestBox.updateScore(best);
     }
 
     /*private void curtainCall() {

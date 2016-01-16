@@ -37,5 +37,8 @@ public class Main extends Application {
         primaryStage.setFullScreenExitHint("");
         primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         primaryStage.show();
+        /*if ((new File(Settings.savePath)).isFile()) {
+            mainAppBoard.boardController.loadFromLastSavedGame();
+        }*/
     }
 }

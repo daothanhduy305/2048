@@ -46,6 +46,11 @@ public class Settings {
     public static final Color small_text_color = Color.rgb(54, 54, 54);
     public static final Color large_text_color = Color.rgb(255, 255, 255);
     public static final DropShadow globalShadow = new DropShadow(4f, 1.5f, 1.5f, Color.DARKGRAY);
+
+    //Others
+    public static final String saveFolder = "saves";
+    public static final String savePath = saveFolder + "/lastGame.sav";
+    public static final String imagesFolder = "file:images/";
     private static final Rectangle2D monitorShape = Screen.getPrimary().getBounds();
     private final Dimension2D boardSize;
     private final Dimension2D pieceSize;

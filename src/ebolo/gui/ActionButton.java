@@ -1,5 +1,6 @@
 package ebolo.gui;
 
+import ebolo.data.Settings;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -8,7 +9,7 @@ import javafx.scene.image.ImageView;
  * Menu buttons
  */
 class ActionButton extends ImageView {
-    private final String prePath = "file:src/ebolo/images/";
+    private final String prePath = Settings.imagesFolder;
     private final String fileType = ".png";
     private final String mName;
     private final ImageView thisButton;

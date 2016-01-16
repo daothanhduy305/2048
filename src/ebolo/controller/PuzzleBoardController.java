@@ -11,6 +11,10 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -35,6 +39,7 @@ public class PuzzleBoardController {
     }
 
     //Generate empty board
+    @SuppressWarnings("unchecked") //Pretending all objects (if must) are loaded correctly
     private void initialize() {
         //Create empty lists
         moveBackup = new ArrayList<>();
@@ -52,8 +57,26 @@ public class PuzzleBoardController {
             }
         }
         //Just pop, no need animation here
-        popNewPiece();
-        popNewPiece();
+        if (!(new File(Settings.savePath)).isFile()) {
+            popNewPiece();
+            popNewPiece();
+        } else {
+            //If there exists a save Game, then load it
+            try {
+                ObjectInputStream saveFile = new ObjectInputStream(new FileInputStream(Settings.savePath));
+                Integer[] savedGame = (Integer[]) saveFile.readObject();
+                for (int counter = 0; counter < Settings.totalTileNumber; counter++) {
+                    puzzlePieces[counter].setValue(savedGame[counter]);
+                }
+                moveBackup = (ArrayList<Integer[]>) saveFile.readObject();
+                long score = (long) saveFile.readObject();
+                long best = (long) saveFile.readObject();
+                mBoard.getMainBoard().getActionMenu().loadScores(score, best);
+                saveFile.close();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void resetBoard() {
@@ -349,6 +372,14 @@ public class PuzzleBoardController {
 
     public ArrayList<Integer[]> getMoveBackup() {
         return moveBackup;
+    }
+
+    public Integer[] getCurrentGame() {
+        Integer[] currentGame = new Integer[Settings.totalTileNumber];
+        for (int counter = 0; counter < Settings.totalTileNumber; counter++) {
+            currentGame[counter] = puzzlePieces[counter].getValue();
+        }
+        return currentGame;
     }
 
     private class MoveData { //Works like a bus for transferring datas between functions

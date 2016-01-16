@@ -19,6 +19,7 @@ public class AppBoard extends GridPane {
     private final ActionMenu actionMenu;
 
     public AppBoard() {
+        actionMenu = new ActionMenu(this);
         Dimension2D puzzleBoardSize = (new Settings()).getBoardSize();
         this.setBackground(new Background(new BackgroundFill(Settings.background_color, null, null)));
         Pane puzzleBoardHolder = new Pane();
@@ -31,7 +32,7 @@ public class AppBoard extends GridPane {
         puzzleBoard.setLayoutY(paddingValue);
         boardGroup = new Group(puzzleBoardHolder);
         this.add(boardGroup, 0, 0, 1, 1);
-        this.add(actionMenu = new ActionMenu(this), 1, 0, 1, 1);
+        this.add(actionMenu, 1, 0, 1, 1);
 
     }
 
