@@ -88,7 +88,7 @@ public class PuzzlePiece extends Pane {
     }
 
     public int getIndex() {
-        return index;
+        return this.index;
     }
 
     public void setValue(int value, boolean refresh) {
@@ -101,29 +101,29 @@ public class PuzzlePiece extends Pane {
 
     private void centralizedLabel(int fontSize) {
         String currentLabel = "";
-        if (value > 0) {
-            currentLabel += value;
+        if (this.value > 0) {
+            currentLabel += this.value;
             FontMetrics fontMetrics = Settings.getFontMetrics(fontSize);
-            valueLabel.setFont(new Font("Segoe UI Black", fontSize));
-            valueLabel.setLayoutX((size.getWidth() - fontMetrics.computeStringWidth(currentLabel)) / 2);
-            valueLabel.setLayoutY((size.getHeight() - fontMetrics.getLineHeight()) / 2);
+            this.valueLabel.setFont(new Font("Segoe UI Black", fontSize));
+            this.valueLabel.setLayoutX((size.getWidth() - fontMetrics.computeStringWidth(currentLabel)) / 2);
+            this.valueLabel.setLayoutY((size.getHeight() - fontMetrics.getLineHeight()) / 2);
         }
-        valueLabel.setText(currentLabel);
+        this.valueLabel.setText(currentLabel);
     }
 
     private void paintPiece() {
-        valueLabel.setTextFill((value < 8) ? Settings.small_text_color : Settings.large_text_color);
+        this.valueLabel.setTextFill((value < 8) ? Settings.small_text_color : Settings.large_text_color);
         this.setBackground(new Background(new BackgroundFill(Settings.tiles_color[logaritOf2OfValue()],
                 new CornerRadii(10f), null)));
     }
 
     private int logaritOf2OfValue() {
-        if (value == 0) {
+        if (this.value == 0) {
             return 0;
         } else {
             int pow = 2;
             int result = 1;
-            while (pow != value) {
+            while (pow != this.value) {
                 pow *= 2;
                 result++;
             }

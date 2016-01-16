@@ -25,7 +25,7 @@ public class ActionMenu extends VBox {
 
     public ActionMenu(AppBoard appBoard) {
         //Preparation
-        mainBoard = appBoard;
+        this.mainBoard = appBoard;
         Dimension2D menuSize = (new Settings()).getMenuSize();
         this.setPrefSize(menuSize.getWidth(), menuSize.getHeight());
         this.setBackground(new Background(new BackgroundFill(Settings.background_color, null, null)));
@@ -48,12 +48,12 @@ public class ActionMenu extends VBox {
         actionBoxes.setPadding(new Insets(0, 30f, 0f, 30f));
         actionBoxes.setVgap(35f);
         double scoreBoxScaleRatio = 1.25;
-        actionBoxes.add((scoreBox = new ScoreBox(
+        actionBoxes.add((this.scoreBox = new ScoreBox(
                 new Dimension2D(
                         menuSize.getWidth() / (2f * scoreBoxScaleRatio),
                         (menuSize.getHeight() - logo.getBoundsInLocal().getHeight()) / (2f * scoreBoxScaleRatio))
         )).boxGroup, 0, 0, 1, 1);
-        actionBoxes.add((bestBox = new ScoreBox(
+        actionBoxes.add((this.bestBox = new ScoreBox(
                 new Dimension2D(
                         menuSize.getWidth() / (2f * 1.25),
                         (menuSize.getHeight() - logo.getBoundsInLocal().getHeight()) / (2f * scoreBoxScaleRatio))
@@ -71,7 +71,7 @@ public class ActionMenu extends VBox {
                     mainBoard.boardController.getPieceAtPos(counter).setValue(
                             mainBoard.boardController.getMoveBackup().get(savedMoveSets - 1)[counter], true);
                 }
-                scoreBox.updateScore(0 - mainBoard.boardController.getMoveBackup().get(savedMoveSets - 1)
+                this.scoreBox.updateScore(0 - mainBoard.boardController.getMoveBackup().get(savedMoveSets - 1)
                         [Settings.totalTileNumber]);
                 mainBoard.boardController.getMoveBackup().remove(
                         savedMoveSets - 1
@@ -83,8 +83,8 @@ public class ActionMenu extends VBox {
         ActionButton restartBut = new ActionButton("restartBut");
         restartBut.setFitWidth(menuSize.getWidth() / (2f * buttonsScaleRatio));
         restartBut.setOnMouseClicked(event -> {
-            scoreBox.resetScore();
-            mainBoard.boardController.resetBoard();
+            this.scoreBox.resetScore();
+            this.mainBoard.boardController.resetBoard();
         });
         buttonsBox.add(restartBut, 0, 1, 1, 1);
 
@@ -107,10 +107,10 @@ public class ActionMenu extends VBox {
                     saveFolder.mkdir();
                 }
                 ObjectOutputStream saveFile = new ObjectOutputStream(new FileOutputStream(Settings.savePath));
-                saveFile.writeObject(mainBoard.boardController.getCurrentGame());
-                saveFile.writeObject(mainBoard.boardController.getMoveBackup());
-                saveFile.writeObject(scoreBox.getScoreValue());
-                saveFile.writeObject(bestBox.getScoreValue());
+                saveFile.writeObject(this.mainBoard.boardController.getCurrentGame());
+                saveFile.writeObject(this.mainBoard.boardController.getMoveBackup());
+                saveFile.writeObject(this.scoreBox.getScoreValue());
+                saveFile.writeObject(this.bestBox.getScoreValue());
                 saveFile.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -131,8 +131,8 @@ public class ActionMenu extends VBox {
 
     public void updateScore(long score) {
         this.scoreBox.updateScore(score);
-        if (scoreBox.getScoreValue() > bestBox.getScoreValue()) {
-            bestBox.updateScore(score);
+        if (this.scoreBox.getScoreValue() > this.bestBox.getScoreValue()) {
+            this.bestBox.updateScore(score);
         }
     }
 

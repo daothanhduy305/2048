@@ -1,7 +1,6 @@
 package ebolo;
 
 import ebolo.controller.BoardKeysHandler;
-import ebolo.controller.PuzzleBoardController;
 import ebolo.data.Settings;
 import ebolo.gui.AppBoard;
 import javafx.application.Application;
@@ -16,8 +15,6 @@ import javafx.stage.Stage;
  */
 
 public class Main extends Application {
-    private PuzzleBoardController boardController;
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -37,8 +34,5 @@ public class Main extends Application {
         primaryStage.setFullScreenExitHint("");
         primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         primaryStage.show();
-        /*if ((new File(Settings.savePath)).isFile()) {
-            mainAppBoard.boardController.loadFromLastSavedGame();
-        }*/
     }
 }

@@ -59,11 +59,12 @@ public class Settings {
 
     public Settings() {
         double percentOfTile = 100f - (tileNumber + 1) * 2f;
-        boardSize = new Dimension2D(getScreenHeight() / 1.1, getScreenHeight() / 1.1);
-        pieceSize = new Dimension2D(((boardSize.getWidth() * percentOfTile) / 100f) / tileNumber,
-                ((boardSize.getWidth() * percentOfTile) / 100f) / tileNumber);
-        menuSize = new Dimension2D((getScreenWidth() - getScreenHeight()), getScreenHeight());
-        paddingValue = (boardSize.getHeight() - pieceSize.getHeight() * (double) tileNumber) / (double) (tileNumber + 1);
+        this.boardSize = new Dimension2D(getScreenHeight() / 1.1, getScreenHeight() / 1.1);
+        this.pieceSize = new Dimension2D(((this.boardSize.getWidth() * percentOfTile) / 100f) / tileNumber,
+                ((this.boardSize.getWidth() * percentOfTile) / 100f) / tileNumber);
+        this.menuSize = new Dimension2D((getScreenWidth() - getScreenHeight()), getScreenHeight());
+        this.paddingValue = (boardSize.getHeight() - this.pieceSize.getHeight() * (double) tileNumber) /
+                (double) (tileNumber + 1);
     }
 
     public static double getScreenHeight() {
@@ -83,27 +84,27 @@ public class Settings {
     }
 
     public Dimension2D getBoardSize() {
-        return boardSize;
+        return this.boardSize;
     }
 
     public Dimension2D getPieceSize() {
-        return pieceSize;
+        return this.pieceSize;
     }
 
     public Dimension2D getMenuSize() {
-        return menuSize;
+        return this.menuSize;
     }
 
     public double getPaddingValue() {
-        return paddingValue;
+        return this.paddingValue;
     }
 
     public Point2D getCoordOfPiece(int index) {
         return (new Point2D(
-                ((getScreenHeight() - boardSize.getHeight()) / 2f) + (index % tileNumber + 1) * paddingValue +
-                        (index % tileNumber) * pieceSize.getWidth(),
-                ((getScreenHeight() - boardSize.getHeight()) / 2f) + (index / tileNumber + 1) * paddingValue +
-                        (index / tileNumber) * pieceSize.getWidth()
+                ((getScreenHeight() - this.boardSize.getHeight()) / 2f) + (index % tileNumber + 1) * this.paddingValue +
+                        (index % tileNumber) * this.pieceSize.getWidth(),
+                ((getScreenHeight() - this.boardSize.getHeight()) / 2f) + (index / tileNumber + 1) * this.paddingValue +
+                        (index / tileNumber) * this.pieceSize.getWidth()
         ));
     }
 }

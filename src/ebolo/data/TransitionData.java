@@ -20,18 +20,18 @@ public class TransitionData {
     public TransitionData(PuzzlePiece fromPiece) {
         this.fromPuzzlePiece = fromPiece;
         int fromIndex = fromPuzzlePiece.getIndex();
-        lastValue = 0;
-        newValue = 0;
-        origin = (new Settings()).getCoordOfPiece(fromIndex);
+        this.lastValue = 0;
+        this.newValue = 0;
+        this.origin = (new Settings()).getCoordOfPiece(fromIndex);
         reCalculate();
     }
 
     public void reCalculate() {
-        destination = (new Settings()).getCoordOfPiece(toIndex);
+        this.destination = (new Settings()).getCoordOfPiece(this.toIndex);
     }
 
     public void setDestination(@Nullable PuzzlePiece destination) {
         this.toPuzzlePiece = (destination == null) ? null : destination;
-        this.toIndex = (destination == null) ? -1 : toPuzzlePiece.getIndex();
+        this.toIndex = (destination == null) ? -1 : this.toPuzzlePiece.getIndex();
     }
 }

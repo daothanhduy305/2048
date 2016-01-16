@@ -11,11 +11,11 @@ public class BoardKeysHandler implements EventHandler<KeyEvent> {
     private final PuzzleBoardController mControlPanel;
 
     public BoardKeysHandler(PuzzleBoardController controlPanel) {
-        mControlPanel = controlPanel;
+        this.mControlPanel = controlPanel;
     }
 
     @Override
     public void handle(KeyEvent event) {
-        mControlPanel.movePieces(event.getCode());
+        this.mControlPanel.movePieces(event.getCode());
     }
 }

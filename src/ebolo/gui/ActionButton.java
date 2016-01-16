@@ -15,8 +15,8 @@ class ActionButton extends ImageView {
     private final ImageView thisButton;
 
     public ActionButton(String buttonName) {
-        thisButton = this;
-        mName = buttonName;
+        this.thisButton = this;
+        this.mName = buttonName;
         this.enable();
         this.setSmooth(true);
         this.setPreserveRatio(true);

@@ -19,28 +19,30 @@ public class AppBoard extends GridPane {
     private final ActionMenu actionMenu;
 
     public AppBoard() {
-        actionMenu = new ActionMenu(this);
         Dimension2D puzzleBoardSize = (new Settings()).getBoardSize();
         this.setBackground(new Background(new BackgroundFill(Settings.background_color, null, null)));
+        this.actionMenu = new ActionMenu(this);
+
         Pane puzzleBoardHolder = new Pane();
         puzzleBoardHolder.setPrefSize(Settings.getScreenHeight(), Settings.getScreenHeight());
         PuzzleBoard puzzleBoard;
         puzzleBoardHolder.getChildren().add(puzzleBoard = new PuzzleBoard(this));
-        boardController = new PuzzleBoardController(puzzleBoard);
         double paddingValue = (Settings.getScreenHeight() - puzzleBoardSize.getHeight()) / 2f;
         puzzleBoard.setLayoutX(paddingValue);
         puzzleBoard.setLayoutY(paddingValue);
-        boardGroup = new Group(puzzleBoardHolder);
-        this.add(boardGroup, 0, 0, 1, 1);
-        this.add(actionMenu, 1, 0, 1, 1);
+
+        this.boardController = new PuzzleBoardController(puzzleBoard);
+        this.boardGroup = new Group(puzzleBoardHolder);
+        this.add(this.boardGroup, 0, 0, 1, 1);
+        this.add(this.actionMenu, 1, 0, 1, 1);
 
     }
 
     public Group getBoardGroup() {
-        return boardGroup;
+        return this.boardGroup;
     }
 
     public ActionMenu getActionMenu() {
-        return actionMenu;
+        return this.actionMenu;
     }
 }

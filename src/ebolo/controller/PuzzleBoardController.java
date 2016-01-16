@@ -32,9 +32,9 @@ public class PuzzleBoardController {
     private ArrayList<Integer> emptyIndexes;
 
     public PuzzleBoardController(PuzzleBoard puzzleBoard) {
-        mBoard = puzzleBoard;
-        thisCP = this;
-        mRandom = new Random();
+        this.mBoard = puzzleBoard;
+        this.thisCP = this;
+        this.mRandom = new Random();
         initialize();
     }
 
@@ -42,18 +42,18 @@ public class PuzzleBoardController {
     @SuppressWarnings("unchecked") //Pretending all objects (if must) are loaded correctly
     private void initialize() {
         //Create empty lists
-        moveBackup = new ArrayList<>();
-        transitionDatas = new TransitionData[Settings.totalTileNumber];
-        puzzlePieces = new PuzzlePiece[Settings.totalTileNumber];
-        emptyIndexes = new ArrayList<>();
+        this.moveBackup = new ArrayList<>();
+        this.transitionDatas = new TransitionData[Settings.totalTileNumber];
+        this.puzzlePieces = new PuzzlePiece[Settings.totalTileNumber];
+        this.emptyIndexes = new ArrayList<>();
 
         for (int row = 0; row < Settings.tileNumber; row++) {
             for (int col = 0; col < Settings.tileNumber; col++) {
                 int index = row * Settings.tileNumber + col;
-                puzzlePieces[index] = new PuzzlePiece(index);
-                mBoard.add(puzzlePieces[index], col, row, 1, 1);
-                transitionDatas[index] = new TransitionData(puzzlePieces[index]);
-                emptyIndexes.add(index);
+                this.puzzlePieces[index] = new PuzzlePiece(index);
+                this.mBoard.add(puzzlePieces[index], col, row, 1, 1);
+                this.transitionDatas[index] = new TransitionData(this.puzzlePieces[index]);
+                this.emptyIndexes.add(index);
             }
         }
         //Just pop, no need animation here
@@ -66,9 +66,9 @@ public class PuzzleBoardController {
                 ObjectInputStream saveFile = new ObjectInputStream(new FileInputStream(Settings.savePath));
                 Integer[] savedGame = (Integer[]) saveFile.readObject();
                 for (int counter = 0; counter < Settings.totalTileNumber; counter++) {
-                    puzzlePieces[counter].setValue(savedGame[counter]);
+                    this.puzzlePieces[counter].setValue(savedGame[counter]);
                 }
-                moveBackup = (ArrayList<Integer[]>) saveFile.readObject();
+                this.moveBackup = (ArrayList<Integer[]>) saveFile.readObject();
                 long score = (long) saveFile.readObject();
                 long best = (long) saveFile.readObject();
                 mBoard.getMainBoard().getActionMenu().loadScores(score, best);
@@ -81,19 +81,19 @@ public class PuzzleBoardController {
 
     public void resetBoard() {
         for (int counter = 0; counter < Settings.totalTileNumber; counter++) {
-            puzzlePieces[counter].setValue(0, true);
+            this.puzzlePieces[counter].setValue(0, true);
         }
-        moveBackup.clear();
+        this.moveBackup.clear();
         popNewPiece();
         popNewPiece();
     }
 
     //Get emptyIndexes list
     private void countEmpties() {
-        emptyIndexes.clear();
+        this.emptyIndexes.clear();
         for (int counter = 0; counter < Settings.totalTileNumber; counter++) {
             if (puzzlePieces[counter].getValue() == 0) {
-                emptyIndexes.add(puzzlePieces[counter].getIndex());
+                this.emptyIndexes.add(this.puzzlePieces[counter].getIndex());
             }
         }
     }
@@ -101,8 +101,8 @@ public class PuzzleBoardController {
     //Randomly Pop new Puzzle Piece
     private int popNewPiece() {
         countEmpties();
-        Integer pos = emptyIndexes.get(mRandom.nextInt(emptyIndexes.size()));
-        puzzlePieces[pos].setValue(((mRandom.nextInt(10) < 8) ? 2 : 4));
+        Integer pos = this.emptyIndexes.get(this.mRandom.nextInt(this.emptyIndexes.size()));
+        this.puzzlePieces[pos].setValue(((this.mRandom.nextInt(10) < 8) ? 2 : 4));
         return (pos);
     }
 
@@ -127,7 +127,7 @@ public class PuzzleBoardController {
                             4 * (puzzlePiece.getIndex() / 4) + loopStart;
                     if (isEmptyTile(nextIndex)) {
                         puzzlePiece.setStep(direction, puzzlePiece.getStep(direction) + 1);
-                    } else if (puzzlePieces[nextIndex].getValue() == puzzlePiece.getValue()) {
+                    } else if (this.puzzlePieces[nextIndex].getValue() == puzzlePiece.getValue()) {
                         puzzlePiece.setStep(direction, puzzlePiece.getStep(direction) + 1);
                         break;
                     } else {
@@ -143,7 +143,7 @@ public class PuzzleBoardController {
                             4 * (puzzlePiece.getIndex() / 4) + loopStart;
                     if (isEmptyTile(nextIndex)) {
                         puzzlePiece.setStep(direction, puzzlePiece.getStep(direction) + 1);
-                    } else if (puzzlePieces[nextIndex].getValue() == puzzlePiece.getValue()) {
+                    } else if (this.puzzlePieces[nextIndex].getValue() == puzzlePiece.getValue()) {
                         puzzlePiece.setStep(direction, puzzlePiece.getStep(direction) + 1);
                         break;
                     } else {
@@ -156,7 +156,7 @@ public class PuzzleBoardController {
     }
 
     private boolean isEmptyTile(int index) {
-        return (puzzlePieces[index].getValue() == 0);
+        return (this.puzzlePieces[index].getValue() == 0);
     }
 
     //Moving [piece] in [direction]
@@ -186,13 +186,13 @@ public class PuzzleBoardController {
                         break;
                 }
                 if (moveData.specialCase) {
-                    if (puzzlePiece.getValue() == puzzlePieces[targetIndex].getValue()) {
+                    if (puzzlePiece.getValue() == this.puzzlePieces[targetIndex].getValue()) {
                         targetIndex += (Settings.isVertical(direction) ?
                                 ((direction == KeyCode.UP) ? 4 : -4) :
                                 (direction == KeyCode.LEFT) ? 1 : -1);
                     }
                 }
-                transitionDatas[puzzlePiece.getIndex()].lastValue = puzzlePiece.getValue();
+                this.transitionDatas[puzzlePiece.getIndex()].lastValue = puzzlePiece.getValue();
                 moveData = joinPieces(puzzlePiece.getIndex(), targetIndex, moveData);
             }
         }
@@ -202,17 +202,17 @@ public class PuzzleBoardController {
     //Processing the moving, either as merging case or normal case
     //Then return the data after finish for further steps
     private MoveData joinPieces(int fromIndex, int toIndex, MoveData moveData) {
-        int value = puzzlePieces[fromIndex].getValue();
-        if (puzzlePieces[fromIndex].getValue() == puzzlePieces[toIndex].getValue()) {
+        int value = this.puzzlePieces[fromIndex].getValue();
+        if (this.puzzlePieces[fromIndex].getValue() == this.puzzlePieces[toIndex].getValue()) {
             value *= 2;
             moveData.specialCase = !moveData.specialCase;
         } else {
             moveData.specialCase = false;
         }
-        puzzlePieces[toIndex].setValue(value, false);
-        transitionDatas[fromIndex].newValue = value;
-        transitionDatas[fromIndex].setDestination(puzzlePieces[toIndex]);
-        puzzlePieces[fromIndex].setValue(0, false);
+        this.puzzlePieces[toIndex].setValue(value, false);
+        this.transitionDatas[fromIndex].newValue = value;
+        this.transitionDatas[fromIndex].setDestination(this.puzzlePieces[toIndex]);
+        this.puzzlePieces[fromIndex].setValue(0, false);
         return moveData;
     }
 
@@ -227,13 +227,13 @@ public class PuzzleBoardController {
         Integer[] moveSet = new Integer[Settings.totalTileNumber + 1];
         for (int counter = 0; counter < Settings.totalTileNumber; counter++) {
             moveSet[counter] = puzzlePieces[counter].getValue();
-            transitionDatas[counter].setDestination(null);
+            this.transitionDatas[counter].setDestination(null);
         }
         moveSet[Settings.totalTileNumber] = 0;
-        if (moveBackup.size() == 20) {
-            moveBackup.remove(0);
+        if (this.moveBackup.size() == 20) {
+            this.moveBackup.remove(0);
         }
-        moveBackup.add(moveSet);
+        this.moveBackup.add(moveSet);
         Thread[] threads = new Thread[4];
         int[] moved = new int[4];
         int movedSum = 0;
@@ -252,7 +252,7 @@ public class PuzzleBoardController {
                     moveData.moved = moved[mLine];
                     moveData.specialCase = joined;
                     int currentIndex = (Settings.isVertical(direction)) ? mLoopStart * 4 + mLine : mLine * 4 + mLoopStart;
-                    moveData = movePiece(direction, puzzlePieces[currentIndex], moveData);
+                    moveData = movePiece(direction, this.puzzlePieces[currentIndex], moveData);
                     moved[mLine] = moveData.moved;
                     joined = moveData.specialCase;
                     mLoopStart += mLoopDelta;
@@ -284,10 +284,10 @@ public class PuzzleBoardController {
             int loopDelta2 = (loopStart2 == 0) ? 1 : -1;
             while (loopStart2 != loopEnd2) {
                 int index = Settings.isVertical(direction) ? loopStart1 * 4 + loopStart2 : loopStart2 * 4 + loopStart1;
-                transitionDatas[index].reCalculate();
-                if (transitionDatas[index].toPuzzlePiece != null) {
-                    finalTransition.getChildren().add(createSlideAnim(transitionDatas[index],
-                            thisCP));
+                this.transitionDatas[index].reCalculate();
+                if (this.transitionDatas[index].toPuzzlePiece != null) {
+                    finalTransition.getChildren().add(createSlideAnim(this.transitionDatas[index],
+                            this.thisCP));
                 }
                 loopStart2 += loopDelta2;
             }
@@ -298,21 +298,21 @@ public class PuzzleBoardController {
 
         finalTransition.setOnFinished(event -> {
             for (int counter = 0; counter < 16; counter++) {
-                puzzlePieces[counter].setValue(null);
+                this.puzzlePieces[counter].setValue(null);
             }
             if (movedSumCopy > 0) {
-                createAppearAnim(puzzlePieces[popNewPiece()], true).play();
+                createAppearAnim(this.puzzlePieces[popNewPiece()], true).play();
             } else {
-                moveBackup.remove(moveBackup.size() - 1);
-                mBoard.getScene().setOnKeyPressed(new BoardKeysHandler(thisCP));
+                this.moveBackup.remove(this.moveBackup.size() - 1);
+                this.mBoard.getScene().setOnKeyPressed(new BoardKeysHandler(this.thisCP));
             }
         });
-        mBoard.getScene().setOnKeyPressed(null);
+        this.mBoard.getScene().setOnKeyPressed(null);
         finalTransition.play();
     }
 
     public PuzzlePiece getPieceAtPos(int position) {
-        return (puzzlePieces[position]);
+        return (this.puzzlePieces[position]);
     }
 
     //Use to generate Pop Up Animation
@@ -371,13 +371,13 @@ public class PuzzleBoardController {
     }
 
     public ArrayList<Integer[]> getMoveBackup() {
-        return moveBackup;
+        return this.moveBackup;
     }
 
     public Integer[] getCurrentGame() {
         Integer[] currentGame = new Integer[Settings.totalTileNumber];
         for (int counter = 0; counter < Settings.totalTileNumber; counter++) {
-            currentGame[counter] = puzzlePieces[counter].getValue();
+            currentGame[counter] = this.puzzlePieces[counter].getValue();
         }
         return currentGame;
     }

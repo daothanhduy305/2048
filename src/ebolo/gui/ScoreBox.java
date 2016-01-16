@@ -21,16 +21,15 @@ class ScoreBox extends Rectangle {
     private long scoreValue;
 
     public ScoreBox(Dimension2D size) {
-        boxSize = size;
-
+        this.boxSize = size;
         //Initialization labels
-        scoreValue = 0;
-        scoreLabel = new Label("" + scoreValue);
-        scoreLabel.setFont(new Font("Segoe UI Black", 45f));
-        scoreLabel.setTextFill(Color.WHITE);
-        boxLabel = new Label("SCORE");
-        boxLabel.setFont(new Font("Segoe UI Black", boxLabelSize));
-        boxLabel.setTextFill(Settings.background_color);
+        this.scoreValue = 0;
+        this.scoreLabel = new Label("" + scoreValue);
+        this.scoreLabel.setFont(new Font("Segoe UI Black", 45f));
+        this.scoreLabel.setTextFill(Color.WHITE);
+        this.boxLabel = new Label("SCORE");
+        this.boxLabel.setFont(new Font("Segoe UI Black", boxLabelSize));
+        this.boxLabel.setTextFill(Settings.background_color);
 
         this.setSmooth(true);
         this.setHeight(size.getHeight());
@@ -40,31 +39,31 @@ class ScoreBox extends Rectangle {
         this.setFill(Settings.board_color);
 
         //Add components
-        boxGroup = new Group(this, boxLabel, scoreLabel);
+        this.boxGroup = new Group(this, boxLabel, scoreLabel);
 
         //Post processing
         centralize();
     }
 
     private void centralize() {
-        boxLabel.setLayoutX((boxSize.getWidth() - Settings.getFontMetrics(boxLabelSize).
-                computeStringWidth(boxLabel.getText())) / 2f);
-        boxLabel.setLayoutY(boxSize.getHeight() / 10f);
-        scoreLabel.setLayoutX((boxSize.getWidth() - Settings.getFontMetrics(45).
-                computeStringWidth(scoreLabel.getText())) / 2f);
-        scoreLabel.setLayoutY(boxSize.getHeight() / 10 + Settings.getFontMetrics(boxLabelSize).getLineHeight() +
-                (boxSize.getHeight() - (boxSize.getHeight() / 10 + Settings.getFontMetrics(boxLabelSize).
+        this.boxLabel.setLayoutX((this.boxSize.getWidth() - Settings.getFontMetrics(this.boxLabelSize).
+                computeStringWidth(this.boxLabel.getText())) / 2f);
+        this.boxLabel.setLayoutY(this.boxSize.getHeight() / 10f);
+        this.scoreLabel.setLayoutX((this.boxSize.getWidth() - Settings.getFontMetrics(45).
+                computeStringWidth(this.scoreLabel.getText())) / 2f);
+        this.scoreLabel.setLayoutY(this.boxSize.getHeight() / 10 + Settings.getFontMetrics(this.boxLabelSize).getLineHeight() +
+                (this.boxSize.getHeight() - (this.boxSize.getHeight() / 10 + Settings.getFontMetrics(this.boxLabelSize).
                         getLineHeight())) / 20f);
         this.setEffect(Settings.globalShadow);
     }
 
     public void updateScore(long score) {
-        scoreLabel.setText("" + (scoreValue += score));
+        this.scoreLabel.setText("" + (this.scoreValue += score));
         centralize();
     }
 
     public long getScoreValue() {
-        return scoreValue;
+        return this.scoreValue;
     }
 
     public void resetScore() {
